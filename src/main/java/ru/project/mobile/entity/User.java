@@ -16,8 +16,6 @@ public class User extends DefaultSuperclass{
     private String password;
     private String email;
 
-    @Autowired
-
     @Enumerated
     RoleEnum role;
     @PrePersist
