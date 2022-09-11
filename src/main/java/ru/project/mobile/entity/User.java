@@ -17,7 +17,7 @@ public class User extends DefaultSuperclass{
     private String email;
 
     @Enumerated
-    RoleEnum role;
+    private RoleEnum role;
     @PrePersist
     void preInsert() {
         if (this.getActive() == null)

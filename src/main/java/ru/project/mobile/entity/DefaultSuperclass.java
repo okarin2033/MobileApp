@@ -17,6 +17,6 @@ public class DefaultSuperclass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    Date dateCreated;
+    private Date dateCreated;
     private Boolean active;
 }
