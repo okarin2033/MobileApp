@@ -28,13 +28,11 @@ public class TokenService {
     }
 
     public String tokenGeneration(LoginFormDto loginFormDto) throws Exception {
-        byte[] bytes = new byte[20];
         User tokenCandidate = userRepo.findByUsername(loginFormDto.getUsername());
         if (tokenCandidate==null)
             throw new Exception("User Not Found") ;
         if (tokenCandidate.getPassword().equals(loginFormDto.getPassword())) {        //ADD SECURITY
-            SecureRandom.getInstanceStrong().nextBytes(bytes);
-            String token = Arrays.toString(bytes);
+            String token = StringGenerator.generateString();
             UserToken session= new UserToken();
             session.setToken(token);
             session.setUser(tokenCandidate);
@@ -45,6 +43,18 @@ public class TokenService {
         }
     }
 
+    public String tokenGenerationWithUser(User tokenCandidate) throws Exception {
+        if (tokenCandidate==null)
+            throw new Exception("User Not Found") ;
+        else {
+            String token = StringGenerator.generateString();
+            UserToken session = new UserToken();
+            session.setToken(token);
+            session.setUser(tokenCandidate);
+            UserToken authorisedSession = tokenRepo.save(session);
+            return authorisedSession.getToken();
+        }
+    }
     public String userRegistration(UserDto userDto) throws Exception {
         User user = userService.addUser(userDto);
         LoginFormDto dto = new LoginFormDto();

@@ -19,4 +19,9 @@ public class DefaultSuperclass {
     private Long id;
     private Date dateCreated;
     private Boolean active;
+    @PrePersist
+    void preInsert() {
+        this.setActive(true);
+        this.setDateCreated(new Date());
+    }
 }

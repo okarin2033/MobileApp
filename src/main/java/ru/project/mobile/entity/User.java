@@ -18,7 +18,8 @@ public class User extends DefaultSuperclass{
 
     @Enumerated
     private RoleEnum role;
-    @PrePersist
+
+    @Override
     void preInsert() {
         if (this.getActive() == null)
             this.setActive(true);

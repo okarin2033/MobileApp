@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(UserDto userDto) {
         User user= new User();
+     //   System.out.println(userDto.getUsername());
         user.setPassword(userDto.getPassword()); //ADD SECURITY!!!
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
