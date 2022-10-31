@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.project.mobile.dto.LoginFormDto;
+import ru.project.mobile.dto.TokenDto;
 import ru.project.mobile.dto.UserDto;
 import ru.project.mobile.entity.User;
 import ru.project.mobile.entity.UserToken;
@@ -27,7 +28,7 @@ public class TokenService {
         this.userService = userService;
     }
 
-    public String tokenGeneration(LoginFormDto loginFormDto) throws Exception {
+    public TokenDto tokenGeneration(LoginFormDto loginFormDto) throws Exception {
         User tokenCandidate = userRepo.findByUsername(loginFormDto.getUsername());
         if (tokenCandidate==null)
             throw new Exception("User Not Found") ;
@@ -37,7 +38,7 @@ public class TokenService {
             session.setToken(token);
             session.setUser(tokenCandidate);
             UserToken authorisedSession = tokenRepo.save(session);
-            return authorisedSession.getToken();
+            return new TokenDto(token, tokenCandidate.getRole());
         } else {
             throw new Exception("Wrong Password") ;
         }
@@ -55,7 +56,7 @@ public class TokenService {
             return authorisedSession.getToken();
         }
     }
-    public String userRegistration(UserDto userDto) throws Exception {
+    public TokenDto userRegistration(UserDto userDto) throws Exception {
         User user = userService.addUser(userDto);
         LoginFormDto dto = new LoginFormDto();
         dto.setPassword(user.getPassword());
@@ -66,9 +67,9 @@ public class TokenService {
     public User getUserByToken(String token) throws Exception {
         User user = tokenRepo.getUserTokenByToken(token).getUser();
         if (user == null)
-            throw new Exception("Wrong Token");
+            throw new Exception("Wrong TokenDto");
         else if (tokenRepo.getUserTokenByToken(token).getActive().equals(true))
             return user;
-        else throw new Exception("Wrong Token");
+        else throw new Exception("Wrong TokenDto");
     }
 }

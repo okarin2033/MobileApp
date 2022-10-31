@@ -1,14 +1,12 @@
 package ru.project.mobile.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.project.mobile.dto.LoginFormDto;
+import ru.project.mobile.dto.TokenDto;
 import ru.project.mobile.dto.UserDto;
-import ru.project.mobile.entity.RoleEnum;
 import ru.project.mobile.entity.User;
 import ru.project.mobile.repository.UserRepo;
 import ru.project.mobile.service.Authorisation.TokenService;
@@ -29,7 +27,7 @@ public class UserController {
         return token;
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginFormDto loginFormDto) throws Exception {
+    public TokenDto login(@RequestBody LoginFormDto loginFormDto) throws Exception {
         return tokenService.tokenGeneration(loginFormDto);
     }
     @PostMapping("/check")
