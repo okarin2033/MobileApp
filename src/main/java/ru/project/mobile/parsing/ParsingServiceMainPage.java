@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class ParsingServiceMainPage {
-    final private String path = "https://book24.ru/";
+    static final private String path = "https://book24.ru/";
     public List<BookSimple> getNewBooks(){
         try {
             Document document = Jsoup.connect(path).get();
@@ -40,7 +40,37 @@ public class ParsingServiceMainPage {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return null; //проверить на нулл
+    }
+
+    public List<BookSimple> getBestBooks(){
+        try {
+            Document document = Jsoup.connect(path).get();
+            ArrayList<BookSimple> books = new ArrayList<BookSimple>();
+            Element body = document.body();
+            Element htmlBooksHolder = body.select("div[itemtype = https://schema.org/OfferCatalog]").get(1);
+            Elements booksInHolder = htmlBooksHolder.select("article.product-card");
+            for (Element e:booksInHolder) {
+                BookSimple book= new BookSimple();
+
+                String url = e.select("picture.product-card__picture").select("source").attr("data-srcset");
+                url = url.split(" ")[0];
+                if (url.startsWith("//"))
+                    url = url.replace("//", "https://");
+                if (url.endsWith(","))
+                    url = url.replace(",", "");
+
+                book.setAuthor(e.select("div.author-list").text());
+                book.setName(e.select("a.product-card__name").attr("title"));
+                book.setUrl("https://book24.ru" + e.select("a.product-card__name").attr("href"));
+                book.setImageUrl(url);
+                books.add(book);
+            }
+            return books;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null; //проверить на нулл
     }
 
 
