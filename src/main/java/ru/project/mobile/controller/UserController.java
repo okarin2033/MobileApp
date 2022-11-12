@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.project.mobile.dto.ClientUserDto;
 import ru.project.mobile.dto.LoginFormDto;
 import ru.project.mobile.dto.TokenDto;
 import ru.project.mobile.dto.UserDto;
@@ -30,8 +31,14 @@ public class UserController {
     public TokenDto login(@RequestBody LoginFormDto loginFormDto) throws Exception {
         return tokenService.tokenGeneration(loginFormDto);
     }
-    @PostMapping("/check")
-    public User check(@RequestBody String token) throws Exception {
-        return tokenService.getUserByToken(token);
+    @PostMapping("/verify")
+    public ClientUserDto check(@RequestBody TokenDto tokenDto) throws Exception {
+        String token = tokenDto.getToken();
+        User user = tokenService.getUserByToken(token);
+        ClientUserDto clientUserDto = new ClientUserDto();
+        clientUserDto.setRole(user.getRole());
+        clientUserDto.setUsername(user.getUsername());
+        clientUserDto.setEmail(user.getEmail());
+        return clientUserDto;
     }
 }

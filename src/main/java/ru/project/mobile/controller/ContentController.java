@@ -28,3 +28,4 @@ public class ContentController {
         return parsingServiceSearch.getSearchRequest(name);
     }
 }
+

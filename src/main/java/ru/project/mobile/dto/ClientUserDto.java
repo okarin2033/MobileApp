@@ -1,11 +1,11 @@
 package ru.project.mobile.dto;
 
 import lombok.Data;
+import ru.project.mobile.entity.RoleEnum;
 
 @Data
-public class UserDto {
+public class ClientUserDto {
     private String username;
-    private String password;
     private String email;
-
+    private RoleEnum role;
 }
