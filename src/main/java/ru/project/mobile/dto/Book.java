@@ -2,14 +2,16 @@ package ru.project.mobile.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Book {
     String bookName;
     String url;
-    String imageUrl;
+    List<String> imageUrl;
     String genre;
     String articul;
     String author;
     String description;
-    int price;
+    double price;
 }
