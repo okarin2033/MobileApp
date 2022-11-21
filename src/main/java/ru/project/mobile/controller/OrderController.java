@@ -1,6 +1,7 @@
 package ru.project.mobile.controller;
 
 
+import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.project.mobile.dto.OrderDto;
@@ -10,6 +11,8 @@ import ru.project.mobile.entity.UserToken;
 import ru.project.mobile.repository.ClientOrderRepository;
 import ru.project.mobile.service.Authorisation.TokenService;
 import ru.project.mobile.service.OrderService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -36,4 +39,16 @@ public class OrderController {
         }
 
     }
+    @PostMapping("/get")
+    public List<ClientOrder> getClientOrederList(@RequestHeader String token){
+        try {
+            User user = tokenService.getUserByToken(token);
+            return orderRepository.getClientOrdersByUser(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }
