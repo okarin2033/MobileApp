@@ -19,6 +19,7 @@ public class ContentController {
     ParsingServiceSearch parsingServiceSearch;
     @Autowired
     ParsingFullBook parsingFullBook;
+
     @GetMapping("/new")
     public List<BookSimple> getNewBooks(){
         return parsingServiceMainPage.getNewBooks();
@@ -36,5 +37,6 @@ public class ContentController {
         System.out.println("url = "+ url);
         return parsingFullBook.getBookData(url);
     }
+
 }
 

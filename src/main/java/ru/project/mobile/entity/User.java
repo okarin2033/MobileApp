@@ -16,6 +16,7 @@ public class User extends DefaultSuperclass{
     private String password;
     private String email;
     private String phone;
+    private String address;
     @Enumerated
     private RoleEnum role;
 

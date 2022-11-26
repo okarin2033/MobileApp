@@ -8,4 +8,6 @@ public class ClientUserDto {
     private String username;
     private String email;
     private RoleEnum role;
+    private String address;
+    private String phone;
 }

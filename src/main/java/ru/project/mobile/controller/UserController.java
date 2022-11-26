@@ -1,13 +1,12 @@
 package ru.project.mobile.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.project.mobile.dto.ClientUserDto;
 import ru.project.mobile.dto.LoginFormDto;
 import ru.project.mobile.dto.TokenDto;
 import ru.project.mobile.dto.UserDto;
+import ru.project.mobile.entity.RoleEnum;
 import ru.project.mobile.entity.User;
 import ru.project.mobile.repository.UserRepo;
 import ru.project.mobile.service.Authorisation.TokenService;
@@ -39,6 +38,23 @@ public class UserController {
         clientUserDto.setRole(user.getRole());
         clientUserDto.setUsername(user.getUsername());
         clientUserDto.setEmail(user.getEmail());
+        clientUserDto.setAddress(user.getAddress());
+        clientUserDto.setPhone(user.getPhone());
         return clientUserDto;
+    }
+    @PutMapping("update/address")
+    public ClientUserDto updateUserAddress(@RequestHeader String token, @RequestBody ClientUserDto dto) throws Exception {
+        System.out.println(dto.getAddress());
+        User user = tokenService.getUserByToken(token);
+        user.setAddress(dto.getAddress());
+        userRepo.save(user);
+        return check(new TokenDto(token, RoleEnum.USER_ROLE));
+    }
+    @PutMapping("update/phone")
+    public ClientUserDto updateUserPhone(@RequestHeader String token, @RequestBody ClientUserDto dto) throws Exception {
+        User user = tokenService.getUserByToken(token);
+        user.setPhone(dto.getPhone());
+        userRepo.save(user);
+        return check(new TokenDto(token, RoleEnum.USER_ROLE));
     }
 }
