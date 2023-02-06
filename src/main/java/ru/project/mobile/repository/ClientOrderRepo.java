@@ -6,6 +6,6 @@ import ru.project.mobile.entity.User;
 
 import java.util.List;
 
-public interface ClientOrderRepository extends JpaRepository<ClientOrder, Long> {
+public interface ClientOrderRepo extends JpaRepository<ClientOrder, Long> {
     List<ClientOrder> getClientOrdersByUser(User user);
 }

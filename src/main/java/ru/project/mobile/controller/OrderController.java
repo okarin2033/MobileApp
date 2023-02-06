@@ -1,14 +1,12 @@
 package ru.project.mobile.controller;
 
 
-import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.project.mobile.dto.OrderDto;
 import ru.project.mobile.entity.ClientOrder;
 import ru.project.mobile.entity.User;
-import ru.project.mobile.entity.UserToken;
-import ru.project.mobile.repository.ClientOrderRepository;
+import ru.project.mobile.repository.ClientOrderRepo;
 import ru.project.mobile.service.Authorisation.TokenService;
 import ru.project.mobile.service.OrderService;
 
@@ -19,7 +17,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    ClientOrderRepository orderRepository;
+    ClientOrderRepo orderRepository;
     @Autowired
     TokenService tokenService;
     @Autowired

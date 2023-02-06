@@ -54,7 +54,11 @@ public class ParsingFullBook {
             bookDto.setDescription(bookDescription);
             bookDto.setAuthor(bookAuthor);
             bookDto.setImageUrl(imageList);
-            bookDto.setPrice(Double.parseDouble(price));
+            try {
+                bookDto.setPrice(Double.parseDouble(price));
+            } catch (Exception e){
+                bookDto.setPrice(9999);
+            }
             bookDto.setGenre(genre);
             bookDto.setArticul(article);
 
