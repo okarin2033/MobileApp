@@ -91,7 +91,7 @@ public class UserController {
 
     @SneakyThrows
     @PutMapping("card/put")
-    public void updateCard(@RequestHeader String token, @RequestBody CardDto cardDto) {
+    public CardDto updateCard(@RequestHeader String token, @RequestBody CardDto cardDto) {
         BonusCard card;
         try{
             card= cardService.getUserCard(token);
@@ -112,5 +112,9 @@ public class UserController {
         card.setCardPower(cardDto.getPower());
         card.setBonusValue(cardDto.getBonus());
         bonusCardRepo.save(card);
+        CardDto dto = new CardDto();
+        dto.setBonus(card.getBonusValue());
+        dto.setPower(card.getCardPower());
+        return dto;
     }
 }
