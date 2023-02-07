@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.project.mobile.dto.UserDto;
+import ru.project.mobile.entity.BonusCard;
 import ru.project.mobile.entity.User;
 import ru.project.mobile.repository.UserRepo;
+import ru.project.mobile.service.Authorisation.TokenService;
 
 import java.util.List;
 
@@ -14,7 +16,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepo userRepo;
-
     @Override
     public User addUser(UserDto userDto) {
         User user= new User();
@@ -47,4 +48,5 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserList() {
         return userRepo.findAll();
     }
+
 }

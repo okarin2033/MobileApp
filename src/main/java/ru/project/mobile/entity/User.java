@@ -29,4 +29,6 @@ public class User extends DefaultSuperclass{
         }
         this.setDateCreated(new Date());
     }
+    @OneToOne
+    BonusCard card;
 }

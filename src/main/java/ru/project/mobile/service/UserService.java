@@ -1,6 +1,7 @@
 package ru.project.mobile.service;
 
 import ru.project.mobile.dto.UserDto;
+import ru.project.mobile.entity.BonusCard;
 import ru.project.mobile.entity.User;
 
 import java.util.List;

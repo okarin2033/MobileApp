@@ -57,7 +57,7 @@ public class ParsingFullBook {
             try {
                 bookDto.setPrice(Double.parseDouble(price));
             } catch (Exception e){
-                bookDto.setPrice(9999);
+                bookDto.setPrice(9999); //книга без цены
             }
             bookDto.setGenre(genre);
             bookDto.setArticul(article);

@@ -1,15 +1,16 @@
 package ru.project.mobile.controller;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.project.mobile.dto.ClientUserDto;
-import ru.project.mobile.dto.LoginFormDto;
-import ru.project.mobile.dto.TokenDto;
-import ru.project.mobile.dto.UserDto;
+import ru.project.mobile.dto.*;
+import ru.project.mobile.entity.BonusCard;
 import ru.project.mobile.entity.RoleEnum;
 import ru.project.mobile.entity.User;
+import ru.project.mobile.repository.BonusCardRepo;
 import ru.project.mobile.repository.UserRepo;
 import ru.project.mobile.service.Authorisation.TokenService;
+import ru.project.mobile.service.CardService;
 import ru.project.mobile.service.UserServiceImpl;
 
 @RestController
@@ -20,6 +21,10 @@ public class UserController {
     UserServiceImpl userService;
     @Autowired
     TokenService tokenService;
+    @Autowired
+    BonusCardRepo bonusCardRepo;
+    @Autowired
+    CardService cardService;
     @PostMapping("/register")
     public String addUser(@RequestBody UserDto userDto) throws Exception {
         User user = userService.addUser(userDto);
@@ -56,5 +61,56 @@ public class UserController {
         user.setPhone(dto.getPhone());
         userRepo.save(user);
         return check(new TokenDto(token, RoleEnum.USER_ROLE));
+    }
+
+    @SneakyThrows
+    @GetMapping("card/get")
+    public CardDto getCardInfo(@RequestHeader String token) {
+        BonusCard card;
+        try{
+            card= cardService.getUserCard(token);
+            if (card==null){
+                BonusCard newCard = new BonusCard();
+                newCard.setBonusValue(50);
+                newCard.setCardPower(3);
+                card = bonusCardRepo.save(newCard);
+                User user = tokenService.getUserByToken(token);
+                user.setCard(card);
+                userRepo.save(user);
+            }
+        }
+        catch (Exception e) {
+            card=new BonusCard();
+            e.printStackTrace();
+        }
+        CardDto cardDto= new CardDto();
+        cardDto.setBonus(card.getBonusValue());
+        cardDto.setPower(card.getCardPower());
+        return cardDto;
+    }
+
+    @SneakyThrows
+    @PutMapping("card/put")
+    public void updateCard(@RequestHeader String token, @RequestBody CardDto cardDto) {
+        BonusCard card;
+        try{
+            card= cardService.getUserCard(token);
+            if (card==null){
+                BonusCard newCard = new BonusCard();
+                newCard.setBonusValue(50);
+                newCard.setCardPower(3);
+                card = bonusCardRepo.save(newCard);
+                User user = tokenService.getUserByToken(token);
+                user.setCard(card);
+                userRepo.save(user);
+            }
+        }
+        catch (Exception e) {
+            card=new BonusCard();
+            e.printStackTrace();
+        }
+        card.setCardPower(cardDto.getPower());
+        card.setBonusValue(cardDto.getBonus());
+        bonusCardRepo.save(card);
     }
 }

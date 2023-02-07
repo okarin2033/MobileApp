@@ -13,7 +13,9 @@ public class ClientOrder extends DefaultSuperclass{
     @ManyToOne
     User user;
     @ElementCollection
-    Map<String, Double> bookList;
+    Map<String, Integer> bookList;
     double fullPrice;
+    double finalPrice;
+    double discount;
 
 }
