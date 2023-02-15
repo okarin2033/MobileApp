@@ -10,6 +10,7 @@ import ru.project.mobile.repository.ClientOrderRepo;
 import ru.project.mobile.service.Authorisation.TokenService;
 import ru.project.mobile.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,24 +25,29 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/new")
-    public ClientOrder addOrder(@RequestHeader String token, @RequestBody OrderDto orderDto) {
+    public boolean addOrder(@RequestHeader String token, @RequestBody OrderDto orderDto) {
         try {
             User user = tokenService.getUserByToken(token);
             ClientOrder order = orderService.compactOrder(orderDto);
             order.setUser(user);
             orderRepository.save(order);
-            return order;
-
+            return true;
         } catch (Exception e) {
             throw new RuntimeException("token expired");
         }
 
     }
-    @PostMapping("/get")
-    public List<ClientOrder> getClientOrederList(@RequestHeader String token){
+    @GetMapping("/get")
+    public List<OrderDto> getClientOrderList(@RequestHeader String token){
         try {
             User user = tokenService.getUserByToken(token);
-            return orderRepository.getClientOrdersByUser(user);
+            List<ClientOrder> clientOrderList = orderRepository.getClientOrdersByUser(user);
+            List<OrderDto> toSendList = new ArrayList<>();
+            clientOrderList.forEach(order ->{
+                OrderDto dto = new OrderDto(order.getBookList(), order.getFullPrice());
+                toSendList.add(dto);
+            });
+            return toSendList;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
