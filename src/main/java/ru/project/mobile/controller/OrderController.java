@@ -44,7 +44,7 @@ public class OrderController {
             List<ClientOrder> clientOrderList = orderRepository.getClientOrdersByUser(user);
             List<OrderDto> toSendList = new ArrayList<>();
             clientOrderList.forEach(order ->{
-                OrderDto dto = new OrderDto(order.getBookList(), order.getFullPrice());
+                OrderDto dto = new OrderDto(order.getBookList(), order.getFullPrice(), order.getDateCreated().toString());
                 toSendList.add(dto);
             });
             return toSendList;
